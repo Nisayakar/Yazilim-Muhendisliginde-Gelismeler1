@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: Kütüphane Yönetim Sistemi API
+  description: Kullanıcıların kitapları arayıp ödünç almasını sağlayan otomasyon sistemi için RESTful API dokümantasyonu.
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000
+    description: Yerel Geliştirme Sunucusu
+
+paths:
+  /login:
+    post:
+      tags:
+        - Kimlik Doğrulama
+      summary: Kullanıcı Girişi
+      description: Sistemde kimlik doğrulaması yapar.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Giriş Başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Geçersiz kimlik bilgileri
+
+  /search:
+    get:
+      tags:
+        - Kitap İşlemleri
+      summary: Kitap Arama
+      description: Anahtar kelimeye göre kütüphane kitaplarını arar.
+      parameters:
+        - in: query
+          name: keyword
+          schema:
+            type: string
+          description: Aranacak anahtar kelime (başlık veya yazar).
+          required: false
+      responses:
+        '200':
+          description: Kitap listesi bulundu
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+        '401':
+          description: Giriş yapılmamış
+
+  /borrow:
+    post:
+      tags:
+        - Kitap İşlemleri
+      summary: Kitap Ödünç Alma
+      description: Uygun durumdaki bir kitabı ödünç alır ve kaydı günceller.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowRequest'
+      responses:
+        '200':
+          description: Ödünç alma başarılı
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+        '400':
+          description: Kitap zaten ödünç alınmış veya uygun değil.
+        '404':
+          description: Kitap bulunamadı.
+        '401':
+          description: Giriş yapılmamış
+
+  /logout:
+    post:
+      tags:
+        - Kimlik Doğrulama
+      summary: Oturumu Sonlandır
+      description: Mevcut kullanıcı oturumunu güvenli bir şekilde sonlandırır.
+      responses:
+        '200':
+          description: Çıkış başarılı
+        '401':
+          description: Giriş yapılmamış
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: user1
+        password:
+          type: string
+          example: pass123
+      required:
+        - username
+        - password
+        
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Giriş Başarılı. Ana menü gösteriliyor.
+        user_id:
+          type: integer
+          example: 101
+        status:
+          type: string
+          example: success
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Sefiller
+        author:
+          type: string
+          example: Victor Hugo
+        status:
+          type: string
+          enum: [Available, Loaned]
+          example: Available
+        loaned_to:
+          type: integer
+          nullable: true
+        loan_date:
+          type: string
+          format: date-time
+          nullable: true
+          
+    BorrowRequest:
+      type: object
+      properties:
+        book_id:
+          type: integer
+          description: Ödünç alınacak kitabın ID'si.
+          example: 2
+      required:
+        - book_id
