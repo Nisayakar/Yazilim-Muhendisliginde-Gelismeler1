@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # 1. Servis: Kütüphane API'si (app.py)
+  # Bu, ana veri mantığınızı barındırır ve 5000 portunda çalışır.
+  flask_app:
+    build: . 
+    # Uygulamayı Gunicorn ile 5000 portunda başlatır
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+    ports:
+      # Host:Container eşlemesi
+      - "5000:5000"
+    container_name: library_api_service
+    # Kod değişikliklerinin anında yansıması için
+    volumes:
+      - ./app.py:/app/app.py
+    restart: unless-stopped
+
+  # 2. Servis: Web Arayüzü (client_app.py)
+  # Bu, kullanıcı arayüzünü sunar ve 5001 portunda çalışır.
+  client_app:
+    build: .
+    container_name: library_client_service
+    # Uygulamayı Gunicorn ile 5001 portunda başlatır
+    command: ["gunicorn", "--bind", "0.0.0.0:5001", "client_app:app"]
+    ports:
+      # Client arayüzünü dış dünyaya açar
+      - "5001:5001"
+    environment:
+      # Client'ın API'yi bulması için Docker'ın dahili ağ adı kullanılır:
+      # http://[Servis Adı]:[Port]
+      - API_BASE_URL=http://flask_app:5000
+    # API'nin başlamasını bekler
+    depends_on:
+      - flask_app
+    # Kod değişikliklerinin anında yansıması için
+    volumes:
+      - ./client_app.py:/app/client_app.py
+    restart: unless-stopped
