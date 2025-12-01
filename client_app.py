@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime 
 import os
 from flask import (
     Flask,
@@ -171,6 +172,12 @@ HTML_TEMPLATE = """
                 Lütfen giriş yapınız. Giriş yaptıktan sonra arama sonuçları ve diğer işlemler burada görünecektir.
             </p>
         {% endif %}
+
+                <footer style="margin-top: 30px; text-align: center; font-size: 14px; color: #5a5a5a;">
+            Bu proje <strong>3 Aralık Docker & GitHub Ödevi</strong> kapsamında güncellenmiştir.<br>
+            🕒 Son Güncelleme: {{ current_date }}
+        </footer>
+
     </div>
 </body>
 </html>
@@ -219,8 +226,10 @@ def index():
     keyword = request.args.get('keyword', '')
     books = None
     my_books = None
-    admin_info = session.pop('admin_info', None) # Yönetici bilgisini oturumdan al
-    
+    admin_info = session.pop('admin_info', None)
+
+    current_date = datetime.now().strftime("%d %B %Y")  # 🟢 DOĞRU YER
+
     if session.get('logged_in'):
         my_books = get_my_borrowed_books() 
         
@@ -230,14 +239,16 @@ def index():
                 books = data['books']
             elif 'error_message' in data:
                 error_message = data['error_message']
-            
+
+
     return render_template_string(
         HTML_TEMPLATE, 
         books=books, 
         keyword=keyword, 
         error_message=error_message,
         my_books=my_books,
-        admin_info=admin_info # HTML'e gönder
+        admin_info=admin_info,
+        current_date=current_date
     )
 
 # --- Login İşlemi ---
