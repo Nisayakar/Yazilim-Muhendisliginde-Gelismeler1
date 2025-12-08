@@ -1,0 +1,16 @@
+services:
+  api_service:
+    build: ./api
+    container_name: library_api_service
+    ports:
+      - "5000:5000"
+
+  client_service:
+    build: ./client
+    container_name: library_client_service
+    ports:
+      - "5001:5001"
+    environment:
+      - API_BASE_URL=http://api_service:5000
+    depends_on:
+      - api_service
