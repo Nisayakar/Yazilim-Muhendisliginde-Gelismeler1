@@ -1,118 +1,114 @@
-Ödev Teslim Raporu — Kütüphane Yönetim Sistemi
+📚 Kütüphane Yönetim Sistemi
+
+(JWT Authentication + Docker Compose Multi-Service Architecture)
+
 🎯 Projenin Amacı
 
-Bu proje, çok servisli mimariye sahip bir web uygulamasının
-Docker Compose ile yönetilmesi ve JWT tabanlı kimlik doğrulama uygulanması üzerine geliştirilmiştir.
+Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile çok servisli mimari şeklinde çalıştırdığı ve
+JWT (Bearer Token) ile kimlik doğrulama & yetkilendirme yaptığı örnek bir sistemdir.
 
-Aşağıdaki gereksinimler tam olarak karşılanmıştır:
-
+✔ Gereksinim Karşılama Tablosu
 Gereksinim	Durum
-İki ayrı servis (Frontend + Backend)	✔
-Servislerin farklı portlarda yayınlanması	✔ (API: 5000, UI: 5001)
-Dockerfile + Docker Compose kullanımı	✔
-JWT veya Bearer Token ile korunan endpointler	✔
-Login zorunlu → tüm kritik işlemler	✔
-Admin / Kullanıcı rol ayrımı	✔
-Kitap ödünç alma / iade etme	✔
-Admin panel → kitap ekle/sil	✔
-Arama, sayfalama, kitap bulunamadı bildirimi	✔
-Bootstrap ile modern arayüz	✔
-🧱 Proje Yapısı
+2 ayrı servis (Frontend + Backend)	✔
+Servislerin 2 farklı port üzerinden sunulması	✔ (5000 API, 5001 UI)
+Dockerfile + Docker Compose ile çalıştırma	✔
+JWT Token ile güvenli erişim	✔
+Giriş yapmayan kişinin erişemeyeceği endpoint	✔
+Admin ve Kullanıcı rol ayrımı	✔
+Kitap ödünç alma & iade işlemleri	✔
+Admin Panel üzerinden kitap ekleme / silme	✔
+Arama, sayfalama, hata durum mesajları	✔
+Şık & responsive UI	✔
+
+🔥 Gereksinimlerin üstüne; kapak görselleri, sayfalama, admin paneli ve Bootstrap UI gibi ekstra özellikler eklenmiştir.
+
+🧱 Proje Dizini (Architecture)
 project/
 │
 ├─ api/
-│  ├─ app.py                 → Backend API
+│  ├─ app.py
 │  ├─ requirements.txt
 │  └─ Dockerfile
 │
 ├─ client/
-│  ├─ client_app.py          → Flask UI (Token Client)
+│  ├─ client_app.py
 │  ├─ client_requirements.txt
 │  └─ Dockerfile
 │
-└─ docker-compose.yml        → Çoklu Servis Yönetimi
+└─ docker-compose.yml
 
-🔌 Servis Yapısı
-Servis	Port	Görevi
-api_service	5000	JWT Authentication + Book API
-client_service	5001	Web UI – Kullanıcı arayüzü
+🔌 Servisler
+Servis	Port	Açıklama
+api_service	5000	JWT destekli Backend API
+client_service	5001	Web UI – Flask Client
+🧿 JWT Kimlik Doğrulama Akışı
 
-Arayüz isteği API’ye token ile gider → Güvenli işlem sağlanır.
+/login → kullanıcı adı & parola ile JWT token üretir
 
-🛡 Kimlik Doğrulama
+Token Session’da tutulur ve API isteklerinde
+Authorization: Bearer <TOKEN> başlığı ile gönderilir
 
-✔ JWT üretimi → /login
-✔ Token header’da taşınır:
+Yetkisiz erişimde:
 
-Authorization: Bearer <TOKEN>
+401 Unauthorized
 
-Endpoint	Auth	Açıklama
-POST /login	❌	Token üretir
-GET /search	❌	Herkes görüntüleyebilir
-GET /my_books	✔	Token şart
-POST /borrow	✔	Ödünç alma
-POST /return	✔	İade
-GET /admin_info	✔ (Admin)	İstatistik
-POST /admin/books	✔ (Admin)	Kitap ekle
-DELETE /admin/books/{id}	✔ (Admin)	Kitap sil
+Admin olmayan kullanıcı Admin endpointine girerse → 403 Forbidden
 
-Rol kontrolü yapılmazsa → 403 Forbidden
-Token yok/yanlış → 401 Unauthorized
-
-🌍 Kullanıcı Arayüzü (Frontend)
-
-✔ Bootstrap temalı modern tasarım
-✔ Kapak görselli kitap listesi
-✔ Arama + sayfalama
-✔ Admin panel → Kitap ekleme / silme
-
-Arayüz Özellikleri (Özet)
+🧪 API Endpointleri
+Endpoint	Method	Auth	Açıklama
+/login	POST	❌	Token üret
+/logout	POST	❌	Çıkış yanıtı
+/search	GET	❌	Kitap arama
+/my_books	GET	✔	Kullanıcının ödünç aldığı kitapları getir
+/borrow	POST	✔	Kitap ödünç alma
+/return	POST	✔	Kitap iade etme
+/admin_info	GET	✔ (Admin)	Yönetim bilgileri
+/admin/books	POST	✔ (Admin)	Kitap ekleme
+/admin/books/{id}	DELETE	✔ (Admin)	Kitap silme
+🎨 Kullanıcı Arayüzü Özellikleri (UI)
 Özellik	Durum
-Login ekranı	✔
-Tüm kitapların listelenmesi	✔
-Ödünç alınmış kitaplar bölümü	✔
-Arama yapılınca filtreleme	✔
-Kitap bulunamadı uyarısı	✔
-Admin panel (sadece admin görür)	✔
-▶️ Çalıştırma Adımları
+Giriş ekranı	✔
+Kapak resimli kitap listesi	✔
+Arama	✔
+Sayfalama (5’erli gösterim)	✔
+Kitap bulunamadı mesajı	✔
+Ödünç alınan kitaplar bölümü	✔
+Admin panel	✔
+Bootstrap ile modern UI	✔
 
-Terminal:
+📌 Giriş yapmayan hiçbir işlem yapamaz — sistem tamamen korumalıdır.
+
+▶️ Çalıştırma
+
+Sadece bu iki komut yeterlidir:
 
 docker-compose down
 docker-compose up --build
 
 
-Tarayıcı:
+Sonra tarayıcıdan:
 
 Servis	Adres
 UI	http://localhost:5001
 
-API	http://localhost:5000/search
+API Örnek	http://localhost:5000/search?keyword=yabancı
 👥 Test Kullanıcıları
 Kullanıcı	Şifre	Rol
 admin	adminpass	Admin
-user1	pass123	Kullanıcı
-Nisa	nisa94	Kullanıcı
+user1	pass123	User
+Nisa	nisa94	User
 
-Admin ile giriş → Admin Paneli açılır.
+Admin rolü ile giriş yapınca ➝ Admin Panel otomatik görünür.
 
-🎨 Ekran Özeti
+🎓 Sonuç
 
-Modern kart tasarımlı kitap listesi
+Bu proje kapsamında:
 
-Her kitapta kapak fotoğrafı, yazar ve durum bilgisi
+✔ JWT Authentication
+✔ Rol bazlı yetkilendirme
+✔ Docker Compose ile 2 servisli mimari
+✔ UI + Backend entegrasyonu
+✔ Modern UX
+✔ API güvenliği
 
-İşlem butonları (Ödünç al / Sil / İade)
-
-Duruma göre mesajlar Bootstrap alert ile gösterilir
-
-📌 Sonuç
-
-Bu proje aşağıdaki konularda yetkinlik göstermektedir:
-
-✔ Microservice Architecture
-✔ RESTful API Geliştirme
-✔ JWT Authentication & Authorization
-✔ Docker & Docker Compose
-✔ UI/UX geliştirme
-✔ HTTP Request Management (Token Forwarding)
+tam olarak uygulanmıştır.
