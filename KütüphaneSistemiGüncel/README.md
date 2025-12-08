@@ -43,49 +43,53 @@ This project demonstrates a **multi-service architecture** using Docker Compose 
   "password": "adminpass"
 }
 
-Durum	Erişim	Sonuç
-Token yok	❌	401 Unauthorized
-User token ile Admin endpoint	❌	403 Forbidden
-Admin token	✔	Admin Panel erişimi
+Durum (Condition),Erişim Hedefi (Target),Sonuç (Result)
+Token yok,🔒 Korumalı Alanlar,❌ 401 Unauthorized
+Token var ama rol user,🔒 Admin Paneli,❌ 403 Forbidden
+Token + admin rolü,✔ Admin Paneli,✅ Erişim Başarılı
 
 📌 Token session içinde tutulur
 📌 Authorization header ile otomatik gönderilir
 → Authorization: Bearer <TOKEN>
 
-🧪 Backend REST API Endpoints
-Endpoint	Method	Auth	Açıklama
-/login	POST	❌	JWT Token üretir
-/logout	POST	❌	Çıkış
-/search	GET	❌	Kitap arama
-/my_books	GET	✔	Kullanıcının kitapları
-/borrow	POST	✔	Ödünç alma
-/return	POST	✔	İade
-/admin_info	GET	🛡 Admin	İstatistik
-/admin/books	POST	🛡 Admin	Kitap ekleme
-/admin/books/{id}	DELETE	🛡 Admin	Kitap silme
+🧪 Backend REST API Endpointleri
+Endpoint,Method,Auth,Açıklama (Description)
+/login,POST,❌,Token üretir
+/logout,POST,❌,Çıkış işlemi
+/search,GET,❌,Kitap arama
+/my_books,GET,✔,Kullanıcının ödünç aldığı kitaplar
+/borrow,POST,✔,Kitap ödünç alma
+/return,POST,✔,Kitap iade etme
+/admin_info,GET,🛡 Admin,Sistem istatistikleri
+/admin/books,POST,🛡 Admin,Yeni kitap ekleme
+/admin/books/{id},DELETE,🛡 Admin,Kitap silme
+
+
 🖥 Kullanıcı Arayüzü — Frontend UI Features
-Özellik	✓
-Giriş ekranı	✔
-Kitap listesi + kapak görselleri	✔
-Arama ve “bulunamadı” uyarısı	✔
-Sayfalama	✔
-Ödünç aldıklarım listesi	✔
-Admin kitap ekleme	✔
-Admin kitap silme	✔
-Modern Bootstrap & Responsive	✔
+Özellik (Feature),Durum (Status)
+Giriş Ekranı (Login Page),✔
+Kitap Listesi + Görseller,✔
+Arama + Sonuç Bulunamadı Uyarısı,✔
+Ödünç Aldıklarım Bölümü,✔
+Admin: Kitap Ekle / Sil,✔
+Sayfalama (Pagination),✔
+Responsive Tasarım,✔
+
 ▶️ Çalıştırma — Run
 docker-compose down
 docker-compose up --build
 
-Uygulama	Adres
-UI	http://localhost:5001
 
-API	http://localhost:5000/search?keyword=sefiller
+Uygulama (Application),Adres (Address)
+Web UI (Arayüz),http://localhost:5001
+API Test,http://localhost:5000/search?keyword=sefiller
+
 👥 Test Kullanıcıları — Test Users
-Kullanıcı	Şifre	Rol
-admin	adminpass	Admin
-user1	pass123	User
-Nisa	nisa94	User
+Kullanıcı Adı,Şifre,Rol (Role)
+admin,adminpass,Admin (Tam Yetki)
+user1,pass123,User (Standart)
+Nisa,nisa94,User (Standart)
+
 🏁 Sonuç — Conclusion
 
 Bu proje başarıyla göstermektedir:
@@ -97,3 +101,4 @@ JWT Authentication	✔
 Role-based Authorization	✔
 Microservice Deployment	✔
 UI + API entegrasyonu	✔
+
