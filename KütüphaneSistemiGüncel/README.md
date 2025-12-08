@@ -36,32 +36,25 @@ This project demonstrates a **multi-service architecture** using Docker Compose 
 | client_service | 5001 | Web UI (Flask Client) | Authentication-aware client UI |
 
 ---
-
-🛡 Kimlik Doğrulama — JWT Authentication Flow
+🛡 JWT Authentication & Authorization Flow
 🔐 Login — POST /login
 {
   "username": "admin",
   "password": "adminpass"
 }
 
-
-Başarılı olursa →
-
-Authorization: Bearer <TOKEN>
-
-
-📌 Token session’da tutulur
-📌 API isteklerinde otomatik eklenir
-
-📌 AUTH Kuralları
 Durum	Erişim	Sonuç
-Token yok	🔒	❌ 401 Unauthorized
-Token var ama rol user	🔒 Admin	❌ 403 Forbidden
-Token + admin	✔	Admin Panel erişimi
+Token yok	❌	401 Unauthorized
+User token ile Admin endpoint	❌	403 Forbidden
+Admin token	✔	Admin Panel erişimi
 
-🧪 Backend REST API Endpointleri
+📌 Token session içinde tutulur
+📌 Authorization header ile otomatik gönderilir
+→ Authorization: Bearer <TOKEN>
+
+🧪 Backend REST API Endpoints
 Endpoint	Method	Auth	Açıklama
-/login	POST	❌	Token üretir
+/login	POST	❌	JWT Token üretir
 /logout	POST	❌	Çıkış
 /search	GET	❌	Kitap arama
 /my_books	GET	✔	Kullanıcının kitapları
@@ -70,41 +63,37 @@ Endpoint	Method	Auth	Açıklama
 /admin_info	GET	🛡 Admin	İstatistik
 /admin/books	POST	🛡 Admin	Kitap ekleme
 /admin/books/{id}	DELETE	🛡 Admin	Kitap silme
-
-🖥 Kullanıcı Arayüzü
-Özellik	Durum
+🖥 Kullanıcı Arayüzü — Frontend UI Features
+Özellik	✓
 Giriş ekranı	✔
-Kitap listesi + görselller	✔
-Arama + sonuç bulunamadı uyarısı	✔
-Ödünç aldıklarım bölümü	✔
-Admin kitap ekle / sil	✔
+Kitap listesi + kapak görselleri	✔
+Arama ve “bulunamadı” uyarısı	✔
 Sayfalama	✔
-Responsive tasarım	✔
-
-▶️ Çalıştırma (Run)
+Ödünç aldıklarım listesi	✔
+Admin kitap ekleme	✔
+Admin kitap silme	✔
+Modern Bootstrap & Responsive	✔
+▶️ Çalıştırma — Run
 docker-compose down
 docker-compose up --build
 
-Tarayıcıdan Aç
 Uygulama	Adres
 UI	http://localhost:5001
 
-API Test	http://localhost:5000/search?keyword=sefiller
-
-👥 Test Kullanıcıları
+API	http://localhost:5000/search?keyword=sefiller
+👥 Test Kullanıcıları — Test Users
 Kullanıcı	Şifre	Rol
 admin	adminpass	Admin
-user1	pass123	Kullanıcı
-Nisa	nisa94	Kullanıcı
+user1	pass123	User
+Nisa	nisa94	User
+🏁 Sonuç — Conclusion
 
+Bu proje başarıyla göstermektedir:
 
-Bu proje;
-
-✔ Docker
-✔ JWT Authentication
-✔ Yetkilendirme yönetimi
-✔ UI/UX
-✔ API tasarımı
-✔ Microservice Mimarisi
-
-konularını başarılı şekilde uygulamaktadır.
+Teknoloji	✓
+Docker & Containers	✔
+Multi-Service Architecture	✔
+JWT Authentication	✔
+Role-based Authorization	✔
+Microservice Deployment	✔
+UI + API entegrasyonu	✔
