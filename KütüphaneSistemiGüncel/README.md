@@ -3,7 +3,7 @@
 
 ---
 
-## 🇹🇷 Proje Amacı (Project Purpose)
+## Proje Amacı (Project Purpose)
 
 Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile **çok servisli mimari** şeklinde çalıştırdığı ve **JWT (Bearer Token) ile kimlik doğrulama & yetkilendirme** yaptığı örnek bir sistemdir.
 
@@ -110,5 +110,6 @@ docker-compose up --build
 | Role-based Authorization   | ✔     |
 | Microservice Deployment    | ✔     |
 | UI + API Entegrasyonu      | ✔     |
+
 
 
