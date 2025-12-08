@@ -1,125 +1,102 @@
-# 📚 Kütüphane Yönetim Sistemi — Library Management System  
-*(JWT Authentication + Docker Compose Multi-Service Architecture)*
+📌 README — Kütüphane Yönetim Sistemi
 
----
+(JWT + Docker Compose Multi-Service Architecture)
 
-## 🇹🇷 Proje Amacı (Project Purpose)
 
-Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile **çok servisli mimari** şeklinde çalıştırdığı ve **JWT (Bearer Token) ile kimlik doğrulama & yetkilendirme** yaptığı örnek bir sistemdir.
+Türkçe Açıklama — Library Management System
+🎯 Proje Amacı
 
-This project demonstrates a **multi-service architecture** using Docker Compose and **JWT-based authentication & authorization**.
+Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile çok servisli mimari şeklinde çalıştırdığını ve JWT (Bearer Token) ile güvenli erişim sağladığını göstermek için geliştirilmiştir.
 
----
+✔️ Gereksinim Karşılama Tablosu
+Özellik / Gereksinim	Durum
+Backend + Frontend ayrı servis	✔
+Servisler farklı portlarda yayınlanır	✔ (5000 API, 5001 UI)
+Dockerfile + Docker Compose ile çalışır	✔
+JWT ile korunan endpoint	✔
+Admin & User rol yönetimi	✔
+Ödünç alma / iade	✔
+Admin kitap ekle / sil	✔
+Arama, sayfalama, sonuç bulunamadı UI	✔
+Bootstrap modern UI	✔
 
-## ✔ Gereksinim Karşılama Tablosu — Requirements Status
-
-| Özellik / Feature | Durum / Status |
-|------------------|:--------------:|
-| 2 ayrı servis (Frontend + Backend) | ✔ |
-| Servislerin farklı portlarda çalışması | ✔ (5000 API – 5001 UI) |
-| Dockerfile ve Docker Compose | ✔ |
-| JWT Token Authentication | ✔ |
-| Rol bazlı erişim (Admin / User) | ✔ |
-| Ödünç alma / İade işlemleri | ✔ |
-| Admin Panel — Kitap ekleme & silme | ✔ |
-| Arama, sayfalama, hata mesajları | ✔ |
-| Kapak görselleri ve modern UI | ✔ |
-| Responsive Bootstrap arayüz | ✔ |
-
----
-
-## 🧱 Proje Mimarisi — Project Architecture
-
+🧱 Mimari — Project Architecture
 project/
 │
 ├─ api/ (Backend — Flask API)
-│ ├─ app.py
-│ ├─ requirements.txt
-│ └─ Dockerfile
+│   ├─ app.py
+│   ├─ requirements.txt
+│   └─ Dockerfile
 │
 ├─ client/ (Frontend — Flask Client UI)
-│ ├─ client_app.py
-│ ├─ client_requirements.txt
-│ └─ Dockerfile
+│   ├─ client_app.py
+│   ├─ client_requirements.txt
+│   └─ Dockerfile
 │
 └─ docker-compose.yml
 
+🔌 Servis Portları
+Servis	Görev	Port
+api_service	JWT destekli Backend API	5000
+client_service	Web UI — Flask Client UI	5001
 
-
----
-
-## 🔌 Servis Detayları — Services
-
-| Servis | Port | Açıklama | Description |
-|--------|-----:|----------|-------------|
-| api_service | 5000 | JWT destekli Backend API | Backend with JWT Auth |
-| client_service | 5001 | Web UI (Flask Client) | Authentication-aware client UI |
-
----
-
-## 🛡 JWT Kimlik Doğrulama — Authentication Flow
-
-### 🔑 Login — POST `/login`
-```json
+🛡 Kimlik Doğrulama — JWT Authentication Flow
+🔐 Login — POST /login
 {
   "username": "admin",
   "password": "adminpass"
 }
-Başarılı olursa:
+
+
+Başarılı olursa →
 
 Authorization: Bearer <TOKEN>
-Token session içinde saklanır ve API isteklerinde otomatik gönderilir.
 
-Login olmadan → ❌ Korunan endpointlere erişilemez
-Without login → ❌ Protected endpoints are blocked
 
-📌 Endpoint Listesi — Backend REST Endpoints
-Endpoint	Method	Auth	Açıklama / Description
-/login	POST	❌	Login, returns JWT
-/logout	POST	❌	Logout response
-/search	GET	❌	Public book search
-/my_books	GET	✔	Borrowed books
-/borrow	POST	✔	Borrow a book
-/return	POST	✔	Return borrowed
-/admin_info	GET	✔(Admin)	Admin stats
-/admin/books	POST	✔(Admin)	Add book
-/admin/books/{id}	DELETE	✔(Admin)	Delete book
+📌 Token session’da tutulur
+📌 API isteklerinde otomatik eklenir
 
-🎨 Kullanıcı Arayüzü Özellikleri — UI Features
-Feature	Status
-Login ekranı & yetkilendirme	✔
-Kapak görselleri	✔
-Kitap arama	✔
+📌 AUTH Kuralları
+Durum	Erişim	Sonuç
+Token yok	🔒	❌ 401 Unauthorized
+Token var ama rol user	🔒 Admin	❌ 403 Forbidden
+Token + admin	✔	Admin Panel erişimi
+
+🧪 Backend REST API Endpointleri
+Endpoint	Method	Auth	Açıklama
+/login	POST	❌	Token üretir
+/logout	POST	❌	Çıkış
+/search	GET	❌	Kitap arama
+/my_books	GET	✔	Kullanıcının kitapları
+/borrow	POST	✔	Ödünç alma
+/return	POST	✔	İade
+/admin_info	GET	🛡 Admin	İstatistik
+/admin/books	POST	🛡 Admin	Kitap ekleme
+/admin/books/{id}	DELETE	🛡 Admin	Kitap silme
+
+🖥 Kullanıcı Arayüzü
+Özellik	Durum
+Giriş ekranı	✔
+Kitap listesi + görselller	✔
+Arama + sonuç bulunamadı uyarısı	✔
+Ödünç aldıklarım bölümü	✔
+Admin kitap ekle / sil	✔
 Sayfalama	✔
-Ödünç aldıklarım	✔
-Admin panel	✔
-Bootstrap modern UI	✔
+Responsive tasarım	✔
 
-📌 Giriş yapmadan hiçbir işlem yapılamaz.
-
-▶️ Çalıştırma — Run
+▶️ Çalıştırma (Run)
 docker-compose down
 docker-compose up --build
 
-📍 Tarayıcı adresleri:
+Tarayıcıdan Aç
+Uygulama	Adres
+UI	http://localhost:5001
 
-Servis	URL
-Web UI	http://localhost:5001
-API Test	http://localhost:5000/search?keyword=yabancı
+API Test	http://localhost:5000/search?keyword=sefiller
 
-👥 Test Kullanıcıları — Test User Accounts
+👥 Test Kullanıcıları
 Kullanıcı	Şifre	Rol
-admin	adminpass	admin
-user1	pass123	user
-Nisa	nisa94	user
+admin	adminpass	Admin
+user1	pass123	Kullanıcı
+Nisa	nisa94	Kullanıcı
 
-Bu proje;
-
-✔ Docker
-✔ JWT Authentication
-✔ Yetkilendirme yönetimi
-✔ UI/UX
-✔ API tasarımı
-✔ Microservice Mimarisi
-
-konularını başarılı şekilde uygulamaktadır.
