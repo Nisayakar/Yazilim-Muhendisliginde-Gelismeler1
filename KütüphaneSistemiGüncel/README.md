@@ -1,44 +1,41 @@
-📌 README — Kütüphane Yönetim Sistemi
+# 📚 Kütüphane Yönetim Sistemi — Library Management System  
+*(JWT Authentication + Docker Compose Multi-Service Architecture)*
 
-(JWT + Docker Compose Multi-Service Architecture)
+---
 
+## 🇹🇷 Proje Amacı (Project Purpose)
 
-Türkçe Açıklama — Library Management System
-🎯 Proje Amacı
+Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile **çok servisli mimari** şeklinde çalıştırdığı ve **JWT (Bearer Token) ile kimlik doğrulama & yetkilendirme** yaptığı örnek bir sistemdir.
 
-Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile çok servisli mimari şeklinde çalıştırdığını ve JWT (Bearer Token) ile güvenli erişim sağladığını göstermek için geliştirilmiştir.
+This project demonstrates a **multi-service architecture** using Docker Compose and **JWT-based authentication & authorization**.
 
-✔️ Gereksinim Karşılama Tablosu
-Özellik / Gereksinim	Durum
-Backend + Frontend ayrı servis	✔
-Servisler farklı portlarda yayınlanır	✔ (5000 API, 5001 UI)
-Dockerfile + Docker Compose ile çalışır	✔
-JWT ile korunan endpoint	✔
-Admin & User rol yönetimi	✔
-Ödünç alma / iade	✔
-Admin kitap ekle / sil	✔
-Arama, sayfalama, sonuç bulunamadı UI	✔
-Bootstrap modern UI	✔
+---
 
-🧱 Mimari — Project Architecture
-project/
-│
-├─ api/ (Backend — Flask API)
-│   ├─ app.py
-│   ├─ requirements.txt
-│   └─ Dockerfile
-│
-├─ client/ (Frontend — Flask Client UI)
-│   ├─ client_app.py
-│   ├─ client_requirements.txt
-│   └─ Dockerfile
-│
-└─ docker-compose.yml
+## ✔ Gereksinim Karşılama Tablosu — Requirements Status
 
-🔌 Servis Portları
-Servis	Görev	Port
-api_service	JWT destekli Backend API	5000
-client_service	Web UI — Flask Client UI	5001
+| Özellik / Feature | Durum / Status |
+|------------------|:--------------:|
+| 2 ayrı servis (Frontend + Backend) | ✔ |
+| Servislerin farklı portlarda çalışması | ✔ (5000 API – 5001 UI) |
+| Dockerfile ve Docker Compose | ✔ |
+| JWT Token Authentication | ✔ |
+| Rol bazlı erişim (Admin / User) | ✔ |
+| Ödünç alma / İade işlemleri | ✔ |
+| Admin Panel — Kitap ekleme & silme | ✔ |
+| Arama, sayfalama, hata mesajları | ✔ |
+| Kapak görselleri ve modern UI | ✔ |
+| Responsive Bootstrap arayüz | ✔ |
+
+---
+
+## 🔌 Servis Detayları — Services
+
+| Servis | Port | Açıklama | Description |
+|--------|-----:|----------|-------------|
+| api_service | 5000 | JWT destekli Backend API | Backend with JWT Auth |
+| client_service | 5001 | Web UI (Flask Client) | Authentication-aware client UI |
+
+---
 
 🛡 Kimlik Doğrulama — JWT Authentication Flow
 🔐 Login — POST /login
@@ -100,3 +97,14 @@ admin	adminpass	Admin
 user1	pass123	Kullanıcı
 Nisa	nisa94	Kullanıcı
 
+
+Bu proje;
+
+✔ Docker
+✔ JWT Authentication
+✔ Yetkilendirme yönetimi
+✔ UI/UX
+✔ API tasarımı
+✔ Microservice Mimarisi
+
+konularını başarılı şekilde uygulamaktadır.
