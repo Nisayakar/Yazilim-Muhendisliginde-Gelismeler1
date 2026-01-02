@@ -25,36 +25,6 @@ Open WebUI -> Ollama
 ---
 
 
-📂 Proje Dizin Yapısı
-
-.
-|-- api_service
-|   |-- app.py
-|   |-- models.py
-|   |-- routes
-|   `-- auth
-|
-|-- client_service
-|   |-- templates
-|   `-- static
-|
-|-- mcp_server
-|   `-- mcp_server.py
-|
-|-- ai_agent
-|   `-- report_agent.py
-|
-|-- monitoring
-|   |-- prometheus.yml
-|   `-- exporter.py
-|
-|-- docker-compose.yml
-`-- README.md
-
-
-
-
----
 
 📡 API Endpoint Örnekleri
 
@@ -160,6 +130,7 @@ Metrikler (Prometheus): http://localhost:9090
 
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
