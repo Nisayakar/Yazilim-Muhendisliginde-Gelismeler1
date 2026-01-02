@@ -66,16 +66,22 @@ Admin: Sistem istatistiklerini görebilir, yeni kitap ekleyebilir veya silebilir
 
 
 Sistemi Başlatın:
+
 docker-compose up --build -d
 
 AI Modelini İndirin (İlk sefer için):
+
 docker exec -it ollama ollama pull gemma:2b
 
 
 Adresler:
+
 Web UI: http://localhost:5001
+
 Chat Paneli (Open WebUI): http://localhost:8080
+
 İzleme Paneli (Grafana): http://localhost:3000 (Giriş: admin/admin)
+
 Metrikler (Prometheus): http://localhost:9090
 
 
@@ -89,6 +95,7 @@ Metrikler (Prometheus): http://localhost:9090
 
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
