@@ -11,12 +11,15 @@ Bu proje; modern mikroservis mimarisini, Model Context Protocol (MCP) üzerinden
 🧱 Sistem Mimarisi
 
 API -> PostgreSQL
+
 API -> JWT
 
 Exporter -> Prometheus
+
 Prometheus -> Grafana
 
 MCP Server -> AI Agent -> Ollama
+
 Open WebUI -> Ollama
 
 ---
@@ -42,6 +45,7 @@ Open WebUI -> Ollama
 │   └── exporter.py
 ├── docker-compose.yml
 └── README.md
+
 
 
 ---
@@ -150,6 +154,7 @@ Metrikler (Prometheus): http://localhost:9090
 
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
