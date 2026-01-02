@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  
+  db:
+    image: postgres:15
+    container_name: library_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpass
+      POSTGRES_DB: library_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d library_db"] 
+      interval: 5s   
+      timeout: 5s 
+      retries: 5   
+
+  api_service:
+    build: ./api
+    container_name: library_api_service
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://admin:adminpass@db:5432/library_db
+
+  client_service:
+    build: ./client
+    container_name: library_client_service
+    ports:
+      - "5001:5001"
+    environment:
+      - API_BASE_URL=http://api_service:5000
+    depends_on:
+      - api_service
+
+  library-exporter:
+    build: ./ai_services
+    container_name: library_exporter
+    command: ["python", "library_exporter.py"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - api_service
+    restart: always
+
+  prometheus:
+    image: prom/prometheus
+    container_name: library_prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+
+  grafana:
+    image: grafana/grafana
+    container_name: library_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: always
+
+
+  library-reporter-agent:
+    build: ./ai_services
+    container_name: library_reporter_agent
+    command: ["python", "report_agent.py"]
+    volumes:
+      - ./reports:/app/reports
+    depends_on:
+      - ollama
+      - api_service
+    restart: always
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: library_chatbot
+    ports:
+      - "8080:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - open-webui-data:/app/backend/data
+    depends_on:
+      - ollama
+    restart: always
+
+volumes:
+  postgres_data:
+  ollama_data:
+  open-webui-data:
