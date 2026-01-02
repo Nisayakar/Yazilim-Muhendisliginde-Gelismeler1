@@ -1,101 +1,86 @@
-# 📚 Kütüphane Yönetim Sistemi — Library Management System  
-*(JWT Authentication + Docker Compose Multi-Service Architecture)*
+📚 Gelişmiş Kütüphane Yönetim Sistemi & AI Ajan Entegrasyonu
+(JWT + Docker Compose + MCP + AI Reporting + Monitoring)
 
 ---
 
-## Proje Amacı (Project Purpose)
-
-Bu proje; Backend geliştiren öğrencilerin uygulamalarını Docker Compose ile **çok servisli mimari** şeklinde çalıştırdığı ve **JWT (Bearer Token) ile kimlik doğrulama & yetkilendirme** yaptığı örnek bir sistemdir.
-
-This project demonstrates a **multi-service architecture** using Docker Compose and **JWT-based authentication & authorization**.
+🚀 Proje Genel Bakış
+Bu proje; modern mikroservis mimarisini, Model Context Protocol (MCP) üzerinden konuşan Yapay Zeka (AI) Ajanları ve gelişmiş izleme araçlarıyla birleştiren kapsamlı bir ekosistemdir. Sistem, bir kütüphanenin temel işlevlerini yerine getirirken, arka planda çalışan AI ajanı ile sistem metriklerini analiz eder ve raporlar sunar.
 
 ---
 
-## ✔ Gereksinim Karşılama Tablosu — Requirements Status
+🛠 Teknoloji Yığını & Yetenekler
 
-| Özellik / Feature | Durum / Status |
-|------------------|:--------------:|
-| 2 ayrı servis (Frontend + Backend) | ✔ |
-| Servislerin farklı portlarda çalışması | ✔ (5000 API – 5001 UI) |
-| Dockerfile ve Docker Compose | ✔ |
-| JWT Token Authentication | ✔ |
-| Rol bazlı erişim (Admin / User) | ✔ |
-| Ödünç alma / İade işlemleri | ✔ |
-| Admin Panel — Kitap ekleme & silme | ✔ |
-| Arama, sayfalama, hata mesajları | ✔ |
-| Kapak görselleri ve modern UI | ✔ |
-| Responsive Bootstrap arayüz | ✔ |
-
----
-
-## 🔌 Servis Detayları — Services
-
-| Servis Adı         | Port | Açıklama                 | Description                     |
-| ------------------ | ---- | ------------------------ | ------------------------------- |
-| library_db     | 5432 | PostgreSQL Veritabanı    | Persistent Data Storage         |
-| api_service    | 5000 | JWT destekli Backend API | Backend with JWT Authentication |
-| client_service | 5001 | Web UI (Flask Client)    | Authentication-aware Client UI  |
+| **Katman**   | **Kullanılan Teknolojiler**                     | **Durum** |
+| ------------ | ----------------------------------------------- | --------- |
+| Backend API  | Python Flask, SQLAlchemy, JWT Authentication    | ✔         |
+| Frontend UI  | Flask Client, Bootstrap 5 (Responsive)          | ✔         |
+| Veritabanı   | PostgreSQL (Persistent Storage)                 | ✔         |
+| AI Katmanı   | Ollama (Gemma:2b), MCP (Model Context Protocol) | ✔         |
+| AI Chat      | Open WebUI (Yerel ChatGPT Arayüzü)              | ✔         |
+| Monitoring   | Prometheus, Grafana, Custom Exporters           | ✔         |
+| Orkestrasyon | Docker Compose (Çok Servisli Mimari)            | ✔         |
 
 
 ---
-🛡 JWT Authentication & Authorization Flow
-🔐 Login — POST /login
 
-Request Body
+🔌 Mikroservis Detayları
 
-{
-  "username": "admin",
-  "password": "adminpass"
-}
-
-✅ Yetkilendirme Senaryoları
-Durum (Condition)	Erişim Hedefi (Target)	Sonuç (Result)
-Token yok	🔒 Korumalı Alanlar	❌ 401 Unauthorized
-Token var ama rol user	🔒 Admin Paneli	❌ 403 Forbidden
-Token + admin rolü	✔ Admin Paneli	✅ Erişim Başarılı
-
-📌 Token session içinde tutulur
-📌 Her istekte otomatik gönderilir
-
-Authorization: Bearer <TOKEN>
-
-🧪 Backend REST API Endpointleri
-| Endpoint            | Method | Auth     | Açıklama (Description)             |
-| ------------------- | ------ | -------- | ---------------------------------- |
-| `/login`            | POST   | ❌        | Token üretir                       |
-| `/logout`           | POST   | ❌        | Çıkış işlemi                       |
-| `/search`           | GET    | ❌        | Kitap arama                        |
-| `/my_books`         | GET    | ✔        | Kullanıcının ödünç aldığı kitaplar |
-| `/borrow`           | POST   | ✔        | Kitap ödünç alma                   |
-| `/return`           | POST   | ✔        | Kitap iade etme                    |
-| `/admin_info`       | GET    | 🛡 Admin | Sistem istatistikleri              |
-| `/admin/books`      | POST   | 🛡 Admin | Yeni kitap ekleme                  |
-| `/admin/books/{id}` | DELETE | 🛡 Admin | Kitap silme                        |
+| **Servis Adı**         | **Port** | **Açıklama**                                                                   |
+| ---------------------- | -------- | ------------------------------------------------------------------------------ |
+| api_service            | 5000     | Ana Backend; JWT doğrulaması ve iş mantığını yürütür.                          |
+| client_service         | 5001     | Kullanıcı arayüzü; kitap ödünç alma / iade işlemlerini yönetir.                |
+| library-exporter       | 8000     | Sistem verilerini (kitap ve kullanıcı sayısı) Prometheus formatına dönüştürür. |
+| prometheus             | 9090     | Metrikleri toplar ve zaman serisi verisi olarak saklar.                        |
+| grafana                | 3000     | Metrikleri görselleştirir (Dashboard).                                         |
+| ollama                 | 11434    | Yerel LLM (Gemma) motoru; AI analizlerini sağlar.                              |
+| library-reporter-agent | –        | MCP üzerinden veri çekip AI tabanlı raporlar üreten otonom ajan.               |
+| open-webui             | 8080     | Ollama için gelişmiş web arayüzü ve chatbot paneli.                            |
 
 
-🖥 Kullanıcı Arayüzü — Frontend UI Features
-| Özellik (Feature)                | Durum (Status) |
-| -------------------------------- | -------------- |
-| Giriş Ekranı (Login Page)        | ✔              |
-| Kitap Listesi + Görseller        | ✔              |
-| Arama + Sonuç Bulunamadı Uyarısı | ✔              |
-| Ödünç Aldıklarım Bölümü          | ✔              |
-| Admin: Kitap Ekle / Sil          | ✔              |
-| Sayfalama (Pagination)           | ✔              |
-| Responsive Tasarım               | ✔              |
+
+---
+
+🤖 AI & MCP Entegrasyonu
+Proje, Model Context Protocol (MCP) kullanarak AI modellerine sistem yeteneklerini birer "tool" (araç) olarak sunar:
+
+MCP Server (mcp_server.py): AI'nın kütüphanede arama yapmasını (search_library) ve sistem istatistiklerini (get_system_stats) almasını sağlayan araçları barındırır.
+
+AI Reporter Agent (report_agent.py): Her saat başı MCP araçlarını kullanarak verileri toplar, Gemma:2b modeliyle analiz eder ve /reports klasörüne Markdown formatında yönetici raporu yazar.
+
+Örnek Rapor Çıktısı: "Sistemde 5 kitap bulunmaktadır, ödünç alma oranı %40'tır. Daha fazla dünya klasiği eklenmesi önerilir.".
+
+---
+
+🔐 Güvenlik ve Yetkilendirme
+JWT (JSON Web Token): Tüm korumalı endpoint'ler Authorization: Bearer <TOKEN> başlığı gerektirir.
+
+Rol Bazlı Erişim (RBAC):
+
+User: Kitap arayabilir, ödünç alabilir ve iade edebilir.
+
+Admin: Sistem istatistiklerini görebilir, yeni kitap ekleyebilir veya silebilir.
+
+---
+
+▶️ Kurulum ve Çalıştırma
 
 
-▶️ Çalıştırma — Run
-docker-compose down
-docker-compose up --build
+Sistemi Başlatın:
+docker-compose up --build -d
 
-🌐 Uygulama Adresleri — Application Addresses
-| Uygulama (Application) | Adres (Address)                                                                                |
-| ---------------------- | ---------------------------------------------------------------------------------------------- |
-| Web UI (Arayüz)        | [http://localhost:5001](http://localhost:5001)                                                 |
-| API Test               | [http://localhost:5000/search?keyword=sefiller](http://localhost:5000/search?keyword=sefiller) |
+AI Modelini İndirin (İlk sefer için):
+docker exec -it ollama ollama pull gemma:2b
 
-👥 Test Kullanıcıları — Test Users
+
+Adresler:
+Web UI: http://localhost:5001
+Chat Paneli (Open WebUI): http://localhost:8080
+İzleme Paneli (Grafana): http://localhost:3000 (Giriş: admin/admin)
+Metrikler (Prometheus): http://localhost:9090
+
+
+
+👥 Test Kullanıcıları
 | Kullanıcı Adı | Şifre     | Rol (Role)        |
 | ------------- | --------- | ----------------- |
 | admin         | adminpass | Admin (Tam Yetki) |
@@ -103,16 +88,11 @@ docker-compose up --build
 | Nisa          | nisa94    | User (Standart)   |
 
 
-🏁 Sonuç — Technology Stack & Capabilities
-| Teknoloji / Feature        | Durum |
-| -------------------------- | ----- |
-| Docker & Containers        | ✔     |
-| Multi-Service Architecture | ✔     |
-| PostgreSQL & SQLAlchemy    | ✔     |
-| JWT Authentication         | ✔     |
-| Role-based Authorization   | ✔     |
-| Microservice Deployment    | ✔     |
-| UI + API Entegrasyonu      | ✔     |
+Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
+
+
+
 
 
 
