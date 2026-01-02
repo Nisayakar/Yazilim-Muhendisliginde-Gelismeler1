@@ -19,21 +19,6 @@ Prometheus -> Grafana
 MCP Server -> AI Agent -> Ollama
 Open WebUI -> Ollama
 
-
-
-[Client UI]
-     |
-     v
-[API Service] ---> [PostgreSQL]
-     |
-     v
-[MCP Server] ---> [AI Agent] ---> [Ollama (Gemma)]
-     |
-     v
-[Exporter] ---> [Prometheus] ---> [Grafana]
-
-
-
 ---
 
 
@@ -64,8 +49,11 @@ Open WebUI -> Ollama
 📡 API Endpoint Örnekleri
 
 POST /api/login
+
 GET  /api/books
+
 POST /api/borrow/{book_id}
+
 POST /api/return/{book_id}
 
 Authorization: Bearer <JWT_TOKEN>
@@ -162,6 +150,7 @@ Metrikler (Prometheus): http://localhost:9090
 
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
