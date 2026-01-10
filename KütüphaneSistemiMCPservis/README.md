@@ -164,43 +164,43 @@ Swagger API Docs (Dokümantasyon): http://localhost:5000/apidocs
 | Nisa          | nisa94    | User (Standart)   |
 
 ---
-
 🤖 Bonus: Yapay Zeka (AI) Güvenlik ve İyileştirme Analizi
+
 Proje kodu yapay zeka (Gemini/ChatGPT) ile analiz edilmiş ve aşağıdaki 5 kritik öneri sunulmuştur:
 
-Hassas Verilerin Yönetimi (.env Kullanımı):
+1. Hassas Verilerin Yönetimi (.env Kullanımı):
 
-Tespit: SECRET_KEY ve veritabanı şifreleri kod içinde açıkça yazılmış.
+     Tespit: SECRET_KEY ve veritabanı şifreleri kod içinde açıkça yazılmış.
 
-Öneri: Bu değerler .env dosyasına taşınmalı ve Docker ortam değişkenleri üzerinden okunmalıdır.
+     Öneri: Bu değerler .env dosyasına taşınmalı ve Docker ortam değişkenleri üzerinden           okunmalıdır.
 
-Parola Güvenliği (Hashing):
+2. Parola Güvenliği (Hashing):
 
-Tespit: Şifreler veritabanında düz metin (plain-text) olarak saklanıyor.
+    Tespit: Şifreler veritabanında düz metin (plain-text) olarak saklanıyor.
 
-Öneri: Şifreler kaydedilmeden önce Werkzeug.security veya Bcrypt ile hashlenmelidir.
+    Öneri: Şifreler kaydedilmeden önce Werkzeug.security veya Bcrypt ile hashlenmelidir.
 
-Girdi Doğrulama (Input Validation):
+3. Girdi Doğrulama (Input Validation):
 
-Tespit: API'ye gelen JSON verileri doğrudan işleniyor.
+    Tespit: API'ye gelen JSON verileri doğrudan işleniyor.
 
-Öneri: Marshmallow veya Pydantic kullanılarak veri tipleri ve boş alan kontrolleri yapılmalıdır.
+    Öneri: Marshmallow veya Pydantic kullanılarak veri tipleri ve boş alan kontrolleri           yapılmalıdır.
 
-Rate Limiting (Hız Sınırlama):
+4. Rate Limiting (Hız Sınırlama):
 
-Tespit: API üzerinde istek sınırlaması yok.
+    Tespit: API üzerinde istek sınırlaması yok.
 
-Öneri: Flask-Limiter kullanılarak IP bazlı hız sınırı (örn: dakikada 60 istek) getirilmelidir.
+    Öneri: Flask-Limiter kullanılarak IP bazlı hız sınırı (örn: dakikada 60 istek)               getirilmelidir.
 
-HTTPS ve CORS Politikaları:
+5. HTTPS ve CORS Politikaları:
 
-Tespit: Uygulama HTTP üzerinden çalışıyor.
+    Tespit: Uygulama HTTP üzerinden çalışıyor.
 
-Öneri: Prodüksiyon ortamında SSL sertifikası (HTTPS) kullanılmalı ve CORS ayarları sadece Frontend domainine izin verecek şekilde daraltılmalıdır.
-
+    Öneri: Prodüksiyon ortamında SSL sertifikası (HTTPS) kullanılmalı ve CORS ayarları           sadece Frontend domainine izin verecek şekilde daraltılmalıdır.
 ---
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
