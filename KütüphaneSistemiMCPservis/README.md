@@ -24,6 +24,38 @@ Open WebUI -> Ollama
 
 ---
 
+## 📊 Sistem Akış Şeması (Sequence Diagram)
+
+Aşağıdaki diyagram, bir kullanıcının sisteme giriş yapıp kitap arama ve ödünç alma sürecini teknik olarak göstermektedir:
+
+```mermaid
+sequenceDiagram
+    participant Kullanıcı
+    participant Arayüz
+    participant Sistem
+    participant Veritabanı
+
+    Kullanıcı->>Arayüz: Giriş bilgilerini girer (kAd, şifre)
+    Arayüz->>Sistem: Kimlik Doğrula(kAd, şifre)
+    Sistem->>Veritabanı: Kullanıcı Bilgisi Sorgula(kAd)
+    Veritabanı-->>Sistem: Bilgi ve Şifre
+    Sistem-->>Arayüz: Giriş Başarılı (Token Döndür)
+    
+    Kullanıcı->>Arayüz: Kitap arama isteği
+    Arayüz->>Sistem: KitapAra(anahtarKelime)
+    Sistem->>Veritabanı: Kitapları Getir
+    Veritabanı-->>Sistem: Kitap Listesi
+    Sistem-->>Arayüz: Sonuçları Göster
+
+    Kullanıcı->>Arayüz: Kitap Ödünç Al (ID)
+    Arayüz->>Sistem: KitapOduncAl (Token + ID)
+    Sistem->>Veritabanı: Durumu Güncelle (Loaned)
+    Veritabanı-->>Sistem: Başarılı
+    Sistem-->>Arayüz: Onay Mesajı
+
+
+---
+
 
 
 📡 API Endpoint Örnekleri
@@ -128,8 +160,35 @@ Metrikler (Prometheus): http://localhost:9090
 | user1         | pass123   | User (Standart)   |
 | Nisa          | nisa94    | User (Standart)   |
 
+---
+```markdown
+## 🤖 Bonus: Yapay Zeka (AI) Güvenlik ve İyileştirme Analizi
 
+Proje kodu yapay zeka (Gemini/ChatGPT) ile analiz edilmiş ve aşağıdaki 5 kritik öneri sunulmuştur:
+
+1.  **Hassas Verilerin Yönetimi (.env Kullanımı):**
+    * *Tespit:* `SECRET_KEY` ve veritabanı şifreleri kod içinde açıkça yazılmış.
+    * *Öneri:* Bu değerler `.env` dosyasına taşınmalı ve Docker ortam değişkenleri üzerinden okunmalıdır.
+
+2.  **Parola Güvenliği (Hashing):**
+    * *Tespit:* Şifreler veritabanında düz metin (plain-text) olarak saklanıyor.
+    * *Öneri:* Şifreler kaydedilmeden önce `Werkzeug.security` veya `Bcrypt` ile hashlenmelidir.
+
+3.  **Girdi Doğrulama (Input Validation):**
+    * *Tespit:* API'ye gelen JSON verileri doğrudan işleniyor.
+    * *Öneri:* `Marshmallow` veya `Pydantic` kullanılarak veri tipleri ve boş alan kontrolleri yapılmalıdır.
+
+4.  **Rate Limiting (Hız Sınırlama):**
+    * *Tespit:* API üzerinde istek sınırlaması yok.
+    * *Öneri:* `Flask-Limiter` kullanılarak IP bazlı hız sınırı (örn: dakikada 60 istek) getirilmelidir.
+
+5.  **HTTPS ve CORS Politikaları:**
+    * *Tespit:* Uygulama HTTP üzerinden çalışıyor.
+    * *Öneri:* Prodüksiyon ortamında SSL sertifikası (HTTPS) kullanılmalı ve CORS ayarları sadece Frontend domainine izin verecek şekilde daraltılmalıdır.
+
+---
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
