@@ -52,7 +52,7 @@ sequenceDiagram
     Sistem->>Veritabanı: Durumu Güncelle (Loaned)
     Veritabanı-->>Sistem: Başarılı
     Sistem-->>Arayüz: Onay Mesajı
-
+```
 
 ---
 
@@ -161,6 +161,7 @@ Metrikler (Prometheus): http://localhost:9090
 | Nisa          | nisa94    | User (Standart)   |
 
 ---
+
 ```markdown
 ## 🤖 Bonus: Yapay Zeka (AI) Güvenlik ve İyileştirme Analizi
 
@@ -185,9 +186,10 @@ Proje kodu yapay zeka (Gemini/ChatGPT) ile analiz edilmiş ve aşağıdaki 5 kri
 5.  **HTTPS ve CORS Politikaları:**
     * *Tespit:* Uygulama HTTP üzerinden çalışıyor.
     * *Öneri:* Prodüksiyon ortamında SSL sertifikası (HTTPS) kullanılmalı ve CORS ayarları sadece Frontend domainine izin verecek şekilde daraltılmalıdır.
-
+```
 ---
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
