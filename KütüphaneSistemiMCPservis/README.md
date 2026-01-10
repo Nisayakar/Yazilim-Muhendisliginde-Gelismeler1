@@ -142,6 +142,8 @@ AI Modelini İndirin (İlk sefer için):
 docker exec -it ollama ollama pull gemma:2b
 
 
+
+
 Adresler:
 
 Web UI: http://localhost:5001
@@ -200,6 +202,7 @@ Proje kodu yapay zeka (Gemini/ChatGPT) ile analiz edilmiş ve aşağıdaki 5 kri
 ---
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
