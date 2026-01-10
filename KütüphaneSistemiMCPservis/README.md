@@ -27,29 +27,6 @@ Open WebUI -> Ollama
 ## 📊 Sistem Akış Şeması (Sequence Diagram)
 
 Aşağıdaki diyagram, bir kullanıcının sisteme giriş yapıp kitap arama ve ödünç alma sürecini teknik olarak göstermektedir:
-sequenceDiagram
-    participant Kullanıcı
-    participant Arayüz
-    participant Sistem
-    participant Veritabanı
-
-    Kullanıcı->>Arayüz: Giriş bilgilerini girer (kAd, şifre)
-    Arayüz->>Sistem: Kimlik Doğrula(kAd, şifre)
-    Sistem->>Veritabanı: Kullanıcı Bilgisi Sorgula(kAd)
-    Veritabanı-->>Sistem: Bilgi ve Şifre
-    Sistem-->>Arayüz: Giriş Başarılı (Token Döndür)
-    
-    Kullanıcı->>Arayüz: Kitap arama isteği
-    Arayüz->>Sistem: KitapAra(anahtarKelime)
-    Sistem->>Veritabanı: Kitapları Getir
-    Veritabanı-->>Sistem: Kitap Listesi
-    Sistem-->>Arayüz: Sonuçları Göster
-
-    Kullanıcı->>Arayüz: Kitap Ödünç Al (ID)
-    Arayüz->>Sistem: KitapOduncAl (Token + ID)
-    Sistem->>Veritabanı: Durumu Güncelle (Loaned)
-    Veritabanı-->>Sistem: Başarılı
-    Sistem-->>Arayüz: Onay Mesajı
 
 ```mermaid
 sequenceDiagram
