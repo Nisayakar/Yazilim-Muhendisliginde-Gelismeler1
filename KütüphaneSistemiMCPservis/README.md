@@ -60,15 +60,13 @@ sequenceDiagram
 
 📡 API Endpoint Örnekleri
 
-POST /api/login
+POST /login
 
-GET  /api/books
+GET  /search
 
-POST /api/borrow/{book_id}
+POST /borrow
 
-POST /api/return/{book_id}
-
-Authorization: Bearer <JWT_TOKEN>
+POST /return
 
 
 ---
@@ -202,6 +200,7 @@ Proje kodu yapay zeka (Gemini/ChatGPT) ile analiz edilmiş ve aşağıdaki 5 kri
 ---
 
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
