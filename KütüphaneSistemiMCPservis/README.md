@@ -80,6 +80,7 @@ Authorization: Bearer <JWT_TOKEN>
 | **Katman**   | **Kullanılan Teknolojiler**                     | **Durum** |
 | ------------ | ----------------------------------------------- | --------- |
 | Backend API  | Python Flask, SQLAlchemy, JWT Authentication    | ✔         |
+| API Docs     | **Flasgger (Swagger UI / OpenAPI 3.0)**         | ✔         |
 | Frontend UI  | Flask Client, Bootstrap 5 (Responsive)          | ✔         |
 | Veritabanı   | PostgreSQL (Persistent Storage)                 | ✔         |
 | AI Katmanı   | Ollama (Gemma:2b), MCP (Model Context Protocol) | ✔         |
@@ -151,6 +152,8 @@ Chat Paneli (Open WebUI): http://localhost:8080
 
 Metrikler (Prometheus): http://localhost:9090
 
+Swagger API Docs (Dokümantasyon): http://localhost:5000/apidocs
+
 
 
 👥 Test Kullanıcıları
@@ -162,33 +165,43 @@ Metrikler (Prometheus): http://localhost:9090
 
 ---
 
-```markdown
-## 🤖 Bonus: Yapay Zeka (AI) Güvenlik ve İyileştirme Analizi
-
+🤖 Bonus: Yapay Zeka (AI) Güvenlik ve İyileştirme Analizi
 Proje kodu yapay zeka (Gemini/ChatGPT) ile analiz edilmiş ve aşağıdaki 5 kritik öneri sunulmuştur:
 
-1.  **Hassas Verilerin Yönetimi (.env Kullanımı):**
-    * *Tespit:* `SECRET_KEY` ve veritabanı şifreleri kod içinde açıkça yazılmış.
-    * *Öneri:* Bu değerler `.env` dosyasına taşınmalı ve Docker ortam değişkenleri üzerinden okunmalıdır.
+Hassas Verilerin Yönetimi (.env Kullanımı):
 
-2.  **Parola Güvenliği (Hashing):**
-    * *Tespit:* Şifreler veritabanında düz metin (plain-text) olarak saklanıyor.
-    * *Öneri:* Şifreler kaydedilmeden önce `Werkzeug.security` veya `Bcrypt` ile hashlenmelidir.
+Tespit: SECRET_KEY ve veritabanı şifreleri kod içinde açıkça yazılmış.
 
-3.  **Girdi Doğrulama (Input Validation):**
-    * *Tespit:* API'ye gelen JSON verileri doğrudan işleniyor.
-    * *Öneri:* `Marshmallow` veya `Pydantic` kullanılarak veri tipleri ve boş alan kontrolleri yapılmalıdır.
+Öneri: Bu değerler .env dosyasına taşınmalı ve Docker ortam değişkenleri üzerinden okunmalıdır.
 
-4.  **Rate Limiting (Hız Sınırlama):**
-    * *Tespit:* API üzerinde istek sınırlaması yok.
-    * *Öneri:* `Flask-Limiter` kullanılarak IP bazlı hız sınırı (örn: dakikada 60 istek) getirilmelidir.
+Parola Güvenliği (Hashing):
 
-5.  **HTTPS ve CORS Politikaları:**
-    * *Tespit:* Uygulama HTTP üzerinden çalışıyor.
-    * *Öneri:* Prodüksiyon ortamında SSL sertifikası (HTTPS) kullanılmalı ve CORS ayarları sadece Frontend domainine izin verecek şekilde daraltılmalıdır.
-```
+Tespit: Şifreler veritabanında düz metin (plain-text) olarak saklanıyor.
+
+Öneri: Şifreler kaydedilmeden önce Werkzeug.security veya Bcrypt ile hashlenmelidir.
+
+Girdi Doğrulama (Input Validation):
+
+Tespit: API'ye gelen JSON verileri doğrudan işleniyor.
+
+Öneri: Marshmallow veya Pydantic kullanılarak veri tipleri ve boş alan kontrolleri yapılmalıdır.
+
+Rate Limiting (Hız Sınırlama):
+
+Tespit: API üzerinde istek sınırlaması yok.
+
+Öneri: Flask-Limiter kullanılarak IP bazlı hız sınırı (örn: dakikada 60 istek) getirilmelidir.
+
+HTTPS ve CORS Politikaları:
+
+Tespit: Uygulama HTTP üzerinden çalışıyor.
+
+Öneri: Prodüksiyon ortamında SSL sertifikası (HTTPS) kullanılmalı ve CORS ayarları sadece Frontend domainine izin verecek şekilde daraltılmalıdır.
+
 ---
+
 Bu proje, backend geliştirme, AI ajanları ve DevOps süreçlerinin birleştiği modern bir mühendislik örneğidir.
+
 
 
 
